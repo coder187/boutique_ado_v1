@@ -64,3 +64,23 @@ DIRS': [
 
 start dev server :
 python3 manage.py runserver
+
+link static files 
+settings.py
+STATICFILES_DIRS = '' # tells django where static files are located
+Since they're located in the project level static folder.
+All we need to do is 
+os.path.join(BASE_DIR, 'static')
+
+I'll also add a 
+MEDIA_URL and a 
+MEDIA_ROUTE which is where all uploaded media files will go.
+
+
+Lastly to allow Django to see the MEDIA_URL.
+We need to go to 
+urls.py
+Import our settings and the static function from 
+django.conf.urls.static
+And then use the static function to add the 
+MEDIA_URL to our list of URLs.
