@@ -62,3 +62,5 @@ DIRS': [
             os.path.join(BASE_DIR,'templates','allauth'),
         ]
 
+start dev server :
+python3 manage.py runserver
