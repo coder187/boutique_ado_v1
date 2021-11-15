@@ -1,3 +1,125 @@
+https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+FSF_102+Q1_2020/courseware/4201818c00aa4ba3a0dae243725f6e32/fdc90a8dc2c340faab301539c931069d/?child=first
+
+new repo
+full template
+pip3 install django
+django-admin startproject boutique_ado dot
+
+.gitignore
+core.Microsoft*
+core.mongo*
+core.python*
+env.py
+__pycache__/
+*.py[cod]
+node_modules/
+.github/
+*.sqllite3
+*.pyc
+
+check all ok
+python3 manage.py runserver 
+
+run migrations
+python3 manage.py migrate
+
+create a superuser so that we can log into the admin.
+python3 manage.py createsuperuser
+superuser
+superuser@someemail.com
+bigpassword
+bigpassword
+
+commit to git "initial commit"
+
+settings.py file
+import os
+
+install DJango AllAuth
+pip3 install django-allauth==0.41.0
+
+https://django-allauth.readthedocs.io/en/latest/installation.html
+
+urls.py
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls.urls')), # urls for login/logout/password reset etc..
+]
+
+add include to imports:
+from django.contrib import admin
+from django.urls import path, include
+
+after adding some apps we need to update the database
+python3 manage.py migrate
+
+navigate to admin page
+click sites
+update:
+domain to: boutique_ado.example.com
+display to: boutique_ado
+
+
+settings.py
+EMAIL_BACKEND = django.core.mail.backends.console.EmailBackend #  this will output to console confirmation email sent by allauth. Disalbe on heroku
+
+ACCOUNT_AUTHTENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+LOGIN_URL = /accounts/login/'
+LOGIN_REDIRECT_URL = '/success'
+
+
+python3 manage.py runserver
+
+
+And then navigate to /accounts/login
+I'll attempt to login using the superuser we created earlier.
+And you'll see that this directs us back to a page telling us we need to confirm our email.
+So we know allauth is working because email confirmations are now required in order to log in.
+The only problem here is that we created this user before installing allauth.
+So we need to create and confirm an email manually.
+To do that I'm gonna login to the admin.
+And open the email address model that was set up when we ran the migrations that came with allauth.
+Notice that this model is under the accounts app.
+Which specifically is the allauth accounts app that we added to installed apps.
+You'll see there's also a social accounts app here.
+And you can see the site's framework
+that comes from adding django.contrib.sites to our installed apps.
+So opening the email address model.
+I'll click Add email address.
+Select my username.
+Enter an email.
+And select both verified and primary. To convince allauth that we verified the email.
+Saving that. Let's logout and head back to the login page to see the difference.
+Now when we log in with the superuser.
+we get a 404 page not found, but that's actually a good thing if you look closely.
+Because we're actually at the /success url.
+That means that our login system redirected us back to the login redirect url in settings.py.
+Which confirms that authentication is working properly.
+At this point, I'm going to go back to settings.py.
+And change the login redirect url to just /
+Which means upon logging in will just be redirected to the home page of our store.
+It looks like everything is working correctly so far
+so let's freeze the requirements of our project with pip3 freeze > requirements.txt
+
+
+
+LOGIN_REDIRECT_URL = '/'
+
+pip3 freeze > requirements.txt
+
+
+git add .
+git commit -m "setup allauth"
+
+
+
+
+
+
 intstall django
 install allauth
 
@@ -84,3 +206,129 @@ Import our settings and the static function from
 django.conf.urls.static
 And then use the static function to add the 
 MEDIA_URL to our list of URLs.
+
+
+
+
+intstall django
+install allauth
+
+create templates/allauth/
+copy template files into project dir
+this allows customization otherwise default templates are used.
+cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates/allauth/
+
+import jquery and booststrap
+https://code.jquery.com/
+
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <
+
+
+  create a 'home' app
+  python3 manage.py startapp home
+  create an home/tempaltes/home/
+  create index.html file here
+index file contents--
+{% extends 'base.html'%}
+
+{% load static %}
+
+{% block content %}
+    <h1 class="display-4 text-success">It Works</h1>
+{% endblock%}
+end index file contents--
+
+we need a view to render the template
+views.py
+def index(request):
+    return render (request, 'home/index.html')
+
+next create urls.py fro  project urls.py [copy]
+in home app
+start urls.py----
+
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('',views.index, name='home')
+]
+
+end urls.py----
+
+on project level urls.py 
+add home urls
+
+now add home app to installed apps in settings.py
+
+DIRS': [
+            os.path.join(BASE_DIR,'templates'),
+            os.path.join(BASE_DIR,'templates','allauth'),
+        ]
+
+start dev server :
+python3 manage.py runserver
+
+link static files 
+settings.py
+STATICFILES_DIRS = '' # tells django where static files are located
+Since they're located in the project level static folder.
+All we need to do is 
+os.path.join(BASE_DIR, 'static')
+
+I'll also add a 
+MEDIA_URL and a 
+MEDIA_ROUTE which is where all uploaded media files will go.
+
+
+Lastly to allow Django to see the MEDIA_URL.
+We need to go to 
+urls.py
+Import our settings and the static function from 
+django.conf.urls.static
+And then use the static function to add the 
+MEDIA_URL to our list of URLs.
+
+adding the Products app
+add images to media folder (kaggle.com)
+create pr0ducts appp
+python3 manage.py startapp Products
+add to imstallted apps in settings.py
+
+create a fixtures folder within products app - used ot load json data to db
+jsonformatter.org
+
+create models in models.py
+class Category(models.M<odel):
+    name =  models.Charfield(max_lenth=254)
+    friendly_name =  models.Charfield(max_lenth=254, null=true, blank=true)
+    
+    def _str_(self):
+        return self.name
+
+    def get_friendly_name(self):
+        return self.friendy_name
+
+class Product(models.M<odel):
+    ....etc
+
+make migrations
+python3 manage.py makemigrations --dry-run
+python3 manage.py makemigrations
+python3 manage.py migrate -plan
+python3 manage.py migrate
+
+admin.py
+from models import Product, Category
+admin.site.register(Product)
+admin.site.register(Category)
+
+python3 manage.py loaddata product.json
