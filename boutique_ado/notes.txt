@@ -356,3 +356,58 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
+
+
+
+to setup products view copy shell from home/views.py
+
+from django.shortcuts import render
+from .models import Product
+
+
+# Create your views here.
+def all_prodcuts(request):
+    ''' a virw to show all products, inc sorting and search query'''
+
+    products = Product.objects.all()  # get all products
+
+    context = {
+        'products': products,
+    } 
+
+    return render(request, 'products/products.html', context)
+    
+
+    copy home/urls.py to pr0ducts/urls.py
+    update file
+    update project level ulrs.py #
+    path('products/', include('products.urls')),
+    create the pr0ducts template
+    mkdir -p products/templates/products
+    touch products/templates/products/products.html
+    base for products page
+    
+{% extends 'base.html'%}
+
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+   <div class = "container">
+       <div class="row">
+           <div class="col">
+                {{ products }}
+           </div>
+
+       </div>
+   </div>
+{% endblock %}
+
+
