@@ -53,26 +53,43 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- in order to add a hr below each row
+                            add a full width column to the row after the last product card col (from above)
+                            add a hr
+                            stack the layout of the hr below the row -> the full width col pushes the hr below.
+
+                        -->
                         {% if forloop.counter|divisibleby:1 %}
-                            <div class="col-12 d-sm-none mb-5">
+                            <!--d-sm-none stops the full width col from rendering except on small screens
+                            so that on larger screens the cols layout side by side (but no hr)
+                            the forloop counter is always divisible by 1 so always do this -->
+                            <div class="col-12 d-sm-none mb-5"> 
                                 <hr>
                             </div>
-                        {% endif %}                        
+                        {% endif %}
+                        
                         {% if forloop.counter|divisibleby:2 %}
+                            <!-- there an even number of cols to display-->
+                            <!-- d-none hide on extra small screens -->
+                            <!-- d-sm-block display block (takes up all the content) on small and larger screens -->
                             <div class="col-12 d-none d-sm-block d-md-block d-lg-none mb-5">
                                 <hr>
                             </div>
                         {% endif %}
+
                         {% if forloop.counter|divisibleby:3 %}
-                            <div class="col-12 d-none d-lg-block d-xl-none mb-5">
-                                <hr>
-                            </div>
-                        {% endif %}
-                        {% if forloop.counter|divisibleby:4 %}
-                            <div class="col-12 d-none d-xl-block mb-5">
-                                <hr>
-                            </div>
-                        {% endif %}
+                        <div class="col-12 d-none d-lg-block d-xl-none mb-5">
+                            <hr>
+                        </div>
+                    {% endif %}
+
+                    {% if forloop.counter|divisibleby:4 %}
+                    <div class="col-12 d-none d-xl-block mb-5">
+                        <hr>
+                    </div>
+                {% endif %}
+                       
                     {% endfor %}
                 </div>
             </div>
