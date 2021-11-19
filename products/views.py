@@ -30,7 +30,9 @@ def all_products(request):
                 #  note3: the annotate method (as I understand it) here is adding another field to the in memory model called 'lower_name'
                 #           the Lower function is then returning lower case name to lower_name field.
                 #           the sort is carried out on the lower case version of the string - making the sort case in-sensitive.
-
+            
+            if sortkey == 'category':
+                sortkey = 'category__name' #  the double underscore tells django to do a foreign key filed lookup. otherwise we are sorting on category.id.
 
             if 'direction' in request.GET:
                 direction = request.GET['direction']
@@ -57,14 +59,19 @@ def all_products(request):
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
 
+    current_sorting = f'{sort}_{direction}'
+
     context = {
         'products': products,
-        'search_term': query,  # why is this added here? perhaps to use the search term on the page?
-        'categories': categories,
+        'search_term': query,  
+        'current_categories': categories, # passing this in context so that we can list the 'sub' categories of the cat selected. e.g. Special Offers > New Arrivals/Deals/Sale/Clear etc..
+        'current_sorting': current_sorting, # passing this in context so that we can set the valueof the sort select box
     }
 
     # note combine the query with
     # https://8000-rose-firefly-8vglw7e2.ws-eu18.gitpod.io/products/?category=jeans&q=boot
+
+
     return render(request, 'products/products.html', context)
     
 
