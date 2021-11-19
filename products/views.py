@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 from django.db.models import Q
 from .models import Product, Category
+from django.db.models.functions import Lower
 
 
 # Create your views here.
@@ -20,16 +21,22 @@ def all_products(request):
         if 'sort' in request.GET:
             sortkey = request.GET['sort']
             sort = sortkey
+
             if sortkey == 'name':
-                print ('#########################')
                 sortkey = 'lower_name'
                 products = products.annotate(lower_name=Lower('name'))
+                #  note1: no call to sort by name yet implented on front end
+                #  note2: you must import the Lower function from django.db.models.functions
+                #  note3: the annotate method (as I understand it) here is adding another field to the in memory model called 'lower_name'
+                #           the Lower function is then returning lower case name to lower_name field.
+                #           the sort is carried out on the lower case version of the string - making the sort case in-sensitive.
+
 
             if 'direction' in request.GET:
                 direction = request.GET['direction']
                 if direction == 'desc':
-                    sortkey = f'-{sortkey}'
-            products = products.order_by(sortkey)
+                    sortkey = f'-{sortkey}'         #  if desc sort then add '-' in front of sortkey, which is the field to sort
+            products = products.order_by(sortkey)   #  django then sorts desc on that field
 
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
@@ -41,7 +48,7 @@ def all_products(request):
             # if 'q' in query param. set query = q
             query = request.GET['q']
             if not query:
-                # if q = emmpty
+                # if q = emmpty ---- note not sure how to call to get empty q? page errors if no value passed to q in querystring
                 messages.error(request, 'You did not enter search criteria')
                 return redirect(reverse('products'))
             
