@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',  # allows new user,password/password reset
     'allauth.socialaccount',  #  allows facebook/google account logins ("like oauth?")
     'home',
-    'products'
+    'products',
+    'bag'
 ]
 
 MIDDLEWARE = [
