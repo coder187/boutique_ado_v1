@@ -463,3 +463,31 @@ def add_to_bag(request, item_id):
 on the form add the POST and action URL
 <form class="form" action="{% url 'add_to_bag' product.id %}" method="POST">
 
+
+
+note on product size
+walkthrough sets size field to false in products table for all excepy clothes.
+add the field to the product model
+then run makemigrations -dry--run
+then run makemigrations 
+then migrate --plan
+the migrate
+
+then use the shell command to drop to the shell (config by settings.py)
+use the shell to set field to true for all clothes products
+start of shell
+from products.models import Product
+kdbb = ['kitchen_dining','bed_bath']
+
+clothes = Product.objects.exclude(category__name__in=kddb)
+clothes.count()
+=130
+
+for item in clothes:
+   ...:     item.has_sizes = True
+   ...:     item.save()
+
+Product.objects.filter(has_sizes=True).count()
+=130
+shell fin 
+
