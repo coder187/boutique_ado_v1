@@ -1,20 +1,22 @@
+
 from django import forms
 from .models import Order
 
 
-class OrderForm(forms.MobileForm):
+class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('full_name','email',
-                    'phone_number',
-                    'street_address1','street_address2',
-                    'postcode', 'county', 'country',)
-    
+        fields = ('full_name', 'email', 'phone_number',
+                  'street_address1', 'street_address2',
+                  'town_or_city', 'postcode', 'country',
+                  'county',)
+
     def __int__(self, *args, **kwargs):
         '''
         Add placehodlers and classes, remove autogen labels and set autoficus
         '''
-        # First we call the default init method to set the form up as it would be by default.
+        # First we call the default init method to set the form up as it would 
+        # be by default.
         super().__int__(*args, **kwargs)
 
         placehodlers = {
@@ -29,17 +31,14 @@ class OrderForm(forms.MobileForm):
             'county': 'County',
         }
 
-    self.fields['full_name'].widget.attrs['autofocus'] = True
+        self.fields['full_name'].widget.attrs['autofocus'] = True
 
-    for field in self.fields:
-        if field in self.fields:
-            placehodler = f'{placehodlers[field]} *'
-        else:
-            placehodler = {placehodlers[field]}
-        self.fields[field].widget.attrs['placeholder'] = placehodler
-        self.fields[field].widget.attrs['class'] = 'stripe-style-input'
-        self.fields[field].labels = False
-        
-
-
-    
+        for field in self.fields:
+            if field in self.fields:
+                placehodler = f'{placehodlers[field]} *'
+            else:
+                placehodler = {placehodlers[field]}
+            self.fields[field].widget.attrs['placeholder'] = placehodler
+            self.fields[field].widget.attrs['class'] = 'stripe-style-input'
+            self.fields[field].labels = False
+            
