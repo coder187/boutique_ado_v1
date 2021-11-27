@@ -3,6 +3,8 @@
 
 {% load static %}
 
+{% load bag_tools %}
+
 {% block page_header %}
     <div class="container header-container">
         <div class="row">
@@ -55,7 +57,7 @@
                                     <p class="my-0">${{ item.product.price }}</p>
                                 </td>
                                 <td class="py-3 w-25">
-                                    <form class="form update-form" method="POST" action="">
+                                    <form class="form update-form" method="POST" action="{% url 'adjust_bag' item.item_id %}">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <div class="input-group">
@@ -84,13 +86,23 @@
                                                 {% endif %}
                                             </div>
                                         </div>
+                                        
                                     </form>
                                     <a class="update-link text-info"><small>Update</small></a>
-                                    <a class="remove-item text-danger float-right" id="remove_{{ item.item_id }}" data-size="{{ item.size }}"><small>Remove</small></a>
+                                    <a class="remove-item text-danger float-right" id="remove_{{ item.item_id }}" data-product_size="{{ item.size }}"><small>Remove</small></a>
+                                    
                                 </td>
                                 <td class="py-3">
                                 <td class="py-3">
-                                    <p class="my-0">${{ item.product.price }}</p>
+                                    <!-- 
+                                        template filter used here to calc the price x qty
+                                        templatetags/bag_tools.py
+                                        included at top of this page
+                                        called by piping the first param in and then supply second param
+                                        called with price | calc_subtotal:qty
+                                        see creating custom template tags and filters in the docs
+                                    -->
+                                    <p class="my-0">${{ item.product.price  | calc_subtotal:item.quantity }}</p> 
                                 </td>
                             </tr>
                         {% endfor %}
@@ -141,23 +153,24 @@
 {% block post_loadjs %}
 {{ block.super }}
 {% include 'products/includes/quantity_input_script.html' %}
-{% endblock %}
 
 
 <script type="text/javascript">
     // Update quantity on click
     $('.update-link').click(function(e) {
+        console.log("update called");
         var form = $(this).prev('.update-form'); // use previuls to find update form and call its submit method
         form.submit();
     })
 
     // Remove item and reload on click
     $('.remove-item').click(function(e) {
+        console.log("remove called");
         var csrfToken = "{{ csrf_token }}"; // store csrfToken as string
         var itemId = $(this).attr('id').split('remove_')[1]; //split the update link
-        var size = $(this).data('size'); //data methog to get date-size attrib
-        var url = `/bag/remove/${itemId}`; 
-        var data = {'csrfmiddlewaretoken': csrfToken, 'size': size}; //csrfToken special key. Why do we not need the item_id?
+        var size = $(this).data('prodcut_size'); //data methog to get date-size attrib
+        var url = `/bag/remove/${itemId}/`; 
+        var data = {'csrfmiddlewaretoken': csrfToken, 'sprodcut_size': size}; //csrfToken special key. Why do we not need the item_id?
 
         $.post(url, data)
          .done(function() { //when done reload the page
@@ -165,3 +178,8 @@
          });
     })
 </script>
+
+
+{% endblock %}
+
+
