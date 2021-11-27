@@ -502,6 +502,25 @@ so tthere is an inner dicitionary to loop over when reading the bag contents.
 the bag.views.py updates the bag on add to bag
 the bag.context.py context processor makes the bag available to all pages.
 
+note on creating foreign keys with django models.
+from the walktrhough two tables were created
+Order and OrderLineItems
+no pks were specified.
+OrderLineItems has a foreign key lookup to order speciifed as Order and fk lookup to Products as prodict
+
+order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
+product = models.ForeignKey(Product, null=False, blank=False, on_delete=models.CASCADE)
+
+inspecting the sqlite database after running the migrations I can see that django 
+has named the tables app_table - checkput_order and checkout_orderlineitems
+has added its own ID PK field to checkput_order and checkout_orderlineitems
+has added an fk index for checkout_order.ID on checkout_orderlineitems.ORDER_ID 
+and prodcuts_product.ID on checkout_orderlineitems.PRODUCT_ID 
+eventhought the corresponding field names are OrderLineItems.order and OrderLineItems.product
+
+
+
+
 
 
 
