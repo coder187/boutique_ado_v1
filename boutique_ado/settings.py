@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',  #  allows facebook/google account logins ("like oauth?")
     'home',
     'products',
-    'bag'
+    'bag',
+    'checkout'
 ]
 
 MIDDLEWARE = [
