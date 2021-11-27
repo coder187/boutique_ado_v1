@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.contrib import messages
 
+from products.models import Product
 
 # Create your views here.
 def view_bag(request):
@@ -8,6 +10,8 @@ def view_bag(request):
 
 def add_to_bag(request, item_id):
     """ Add a quantity of the specified product to the shopping bag """
+    
+
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
     size = None
@@ -29,6 +33,12 @@ def add_to_bag(request, item_id):
             bag[item_id] += quantity
         else:
             bag[item_id] = quantity
+
+
+    
+    # show success msg via boostrap toast.
+    product = Product.objects.get(pk=item_id)  # for tost message only
+    messages.success(request, message)(request, f'Added {product.name} to your bag.')
 
     # create a dictionary to hold the session variable 'bag'. If there is no bag session var, create an empty one.
     # if the current item_id exists in the session var, increment by quantiy else set bag.item_id = quantity
