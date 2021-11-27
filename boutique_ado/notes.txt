@@ -491,3 +491,18 @@ Product.objects.filter(has_sizes=True).count()
 =130
 shell fin 
 
+
+a note on product size
+all products have "has_size" field set to true
+we then manually set the products that do not jave haves sizes to false (homeware, cuflinks, pillows etc...)
+we add the size select to the detail & bag page and logic to show
+for products with no size the session bag has the format {id:quantity}
+for products size the session bag has the format id:{item_size:size:qty}
+so tthere is an inner dicitionary to loop over when reading the bag contents.
+the bag.views.py updates the bag on add to bag
+the bag.context.py context processor makes the bag available to all pages.
+
+
+
+
+
