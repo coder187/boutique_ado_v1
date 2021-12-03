@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import dj_database_url
+
 
 from pathlib import Path
 
@@ -27,7 +29,9 @@ SECRET_KEY = 'django-insecure--ldpjg*mn8yo%!f33l-vc=qu21!@4t+@+zivupepiveyx17!x-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ci-boutique-ado-coder187.herokuapp.com','localhost']
+
 
 
 # Application definition
@@ -119,12 +123,29 @@ WSGI_APPLICATION = 'boutique_ado.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
+#DATABASES= {
+#    'default':dj_database_url.parse('postgres://fxonmbronysfan:72190d055b8dc44a66ca974ace5e54f6c8448d5a1f1917e42603754e773793ff@ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/d5q99mpl5c02pc')
+#    }
+
+# when running in heroku tyjere will be a database_url var
+if 'DATABASE_URL' in os.environ:
+	DATABASES= {
+		'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+		}
+else:
+    DATABASES = {
+        'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 # Password validation
