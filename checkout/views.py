@@ -7,14 +7,25 @@ from .models import Order, OrderLineItem
 from products.models import Product
 from bag.contexts import bag_contents
 
-from datetime import datetime
+import datetime
 
 
 import stripe
 
 def checkout(request):
+    # 1 PAGE LOADS AND CREATES AN INTENT WITH STRIPE
+    # 2 USER FILLS IN FORM AND CC DETAILS AND SUBMITS FORM
+    # 3 PAGE RELOADS (POST)
+    #   3.1 JAVASCRIPT LISTENER INTERCEPTS SUBMIT AND VALIDATES CARD AND PROCOESS CC TRANSACTION
+    #   3.2 FORM IS SUBMITTED IF ALL OK
+    #       3.2.1 FORM DATA IS VALIDATED
+    #       3.2.2 ORDER HEADER IS WRITTEN TO ORDER TABLE IN DB
+    #       3.2.3 EACH BAG ITEM IS WRITTEN TO ORDERLINEITEMS
+    #   3.3 IF ALL OK DELETE ORDER FROM BAG AND REDIRECT TO SUCCESS.HTML
+    
+
     print('checkout started')
-    print(now)
+    print(datetime.datetime.now())
 
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -23,7 +34,8 @@ def checkout(request):
     # print(stripe_secret_key)
 
     if request.method == 'POST':
-        print(now)
+        print('POST VALIDATNG FORM')
+        print(datetime.datetime.now())
         bag = request.session.get('bag', {})
 
         form_data = {
@@ -64,7 +76,8 @@ def checkout(request):
             messages.error(request, 'There was an error with your form. \
                 Please double check your information.')
     else:
-        print(now)
+        print('START STRIPE INTENT')
+        print(datetime.datetime.now())
         bag = request.session.get('bag', {})
         if not bag:
             messages.error(request, "There's nothing in your bag at the moment")
