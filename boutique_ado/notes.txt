@@ -521,6 +521,9 @@ eventhought the corresponding field names are OrderLineItems.order and OrderLine
 
 
 
+postgres db-----
+#pip3 install psycopg2-binary
+
 
 CONNECTING TO STRIPE -----
  note set these env vars in gitpod with 
