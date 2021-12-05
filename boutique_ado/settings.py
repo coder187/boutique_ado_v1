@@ -25,17 +25,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure--ldpjg*mn8yo%!f33l-vc=qu21!@4t+@+zivupepiveyx17!x-'
+# SECRET_KEY = os.environ.get('SECRET_KEY', '')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = 'DEVELOPMENT' in os.environ
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['ci-boutique-ado-coder187.herokuapp.com','localhost']
-
+ALLOWED_HOSTS = ['ci-boutique-ado-coder187.herokuapp.com', 'localhost']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,14 +138,14 @@ WSGI_APPLICATION = 'boutique_ado.wsgi.application'
 
 # when running in heroku tyjere will be a database_url var
 if 'DATABASE_URL' in os.environ:
-	DATABASES= {
-		'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
-		}
+    DATABASES= {
+	    'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
 else:
     DATABASES = {
         'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
