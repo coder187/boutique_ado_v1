@@ -630,7 +630,7 @@ save file - cannot be redownloaded.
 
 connect django
 pip3 install boto3
-pip3 install django-stroages
+pip3 install django-storages
 pip3 freeze > requirements.txt
 
 add to installed apps 'storages'

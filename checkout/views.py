@@ -4,7 +4,7 @@ from django.conf import settings
 
 from .forms import OrderForm
 from .models import Order, OrderLineItem
-from events.models import EventList
+from products.models import Product
 from bag.contexts import bag_contents
 
 from datetime import datetime
@@ -85,7 +85,7 @@ def checkout(request):
         order_form = OrderForm()
     
     if not stripe_public_key:
-        message.warning(request,'Strip Public Key missing. Did you forget to set an environment variable ?')
+        message.warning(request,'Stripe Public Key missing. Did you forget to set an environment variable ?')
     
     template = 'checkout/checkout.html'
     context = {
