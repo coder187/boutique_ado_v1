@@ -524,4 +524,200 @@ eventhought the corresponding field names are OrderLineItems.order and OrderLine
 
 
 
+connectung to AWS ----------------
+aws s3
+
+aws.amazon.com
+create acc
+
+personal
+create - cont
+
+credit card
+free to limit
+
+aws.amazon.com
+sign in - my acc - man console
+
+find services
+S3
+
+create new bucket
+match heroku app name
+
+uncheck all public access
+
+ack
+
+create bucket
+
+properties TAB
+turn on static web site hosting
+
+
+For the index and error document, we can just fill in some default values
+since they won't be used in our case.
+And then click save.
+
+Now on the permissions tab we'll make three changes
+First I'll paste in a coors configuration
+which is going to set up the required access between our Heroku app and this s3 bucket.
+Next I'll go to the bucket policy tab.
+And select, policy generator so we can create a security policy for this bucket.
+The policy type is going to be s3 bucket policy.
+Will allow all principals by using a star.
+And the action will be, get object.
+Now I'll copy the ARN which stands for Amazon resource name from the other tab.
+And paste it into the ARN box here at the bottom.
+I'll click Add statement.
+Then generate policy.
+Then copy this policy into the bucket policy editor.
+Before I click Save because we want to allow access to all resources in this bucket.
+I'll add a slash star here onto the end of the resource key.
+Now I can click Save and we're almost done.
+
+access control lsit
+list objects permission - everyone
+
+
+
+[
+  {
+      "AllowedHeaders": [
+          "Authorization"
+      ],
+      "AllowedMethods": [
+          "GET"
+      ],
+      "AllowedOrigins": [
+          "*"
+      ],
+      "ExposeHeaders": []
+  }
+]
+
+
+iam
+identiy access managemnt
+1 createa a group
+name next step next step cteate grouo
+2 policy
+policies create policy - json tab - import impolicy - search fro s3 - import s3 full access policy - 
+get bucket arn from arn page
+and paste that to poixt josn#
+review policy add name and desc
+crreate policy
+3 assign theto the grou
+groups select group - seelect policy - attach policy
+
+crrate a user
+users page
+add user
+programmitc access - next
+add user to group
+next - create user
+
+download csv - ciontains the access keys
+save file - cannot be redownloaded.
+
+
+connect django
+pip3 install boto3
+pip3 install django-stroages
+pip3 freeze > requirements.txt
+
+add to installed apps 'storages'
+
+settings.py DO NOT ADD ACCESS KEYS TO GIT
+
+if 'USE_AWS' in os.environ:
+    # Cache control
+    	AWS_S3_OBJECT_PARAMETERS = {
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'CacheControl': 'max-age=94608000',
+    	}
+    # Bucket Config
+    AWS_STORAGE_BUCKET_NAME = 'ckz8780-boutique-ado'
+    AWS_S3_REGION_NAME = 'us-east-1'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+    # Static and media files
+    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+    STATICFILES_LOCATION = 'static'
+    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+    MEDIAFILES_LOCATION = 'media'
+
+    # Override static and media URLs in production
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+	
+
+
+heroku 
+add keys to config vars#
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY
+
+renmove diable static
+
+create custom_storages.py on root
+
+from django.conf import settings
+from storages.backends.s3boto3 import S3Boto3Storage
+
+
+class StaticStorage(S3Boto3Storage):
+    location = settings.STATICFILES_LOCATION
+
+
+class MediaStorage(S3Boto3Storage):
+    location = settings.MEDIAFILES_LOCATION
+
+
+git add .
+git commit - m
+git push
+
+check build log for statuc files.
+
+
+s3
+add new folder 'media'
+upload files
+
+grant public read access
+
+next 
+upload
+
+
+add stripe keys 
+heroku add config vsrs
+
+stripe
+create new web hook endpoint
+
+
+Now we need to create a new webhook endpoint
+since the current one is sending webhooks to our gitpod workspace.
+We can do that by going to webhooks in the developer's menu.
+Clicking add endpoint. Adding the URL for our Heroku app.
+Followed by /checkout/WH
+And then selecting receive all events and add endpoint.
+We can now reveal our webhooks signing secret.
+And add that to our Heroku config variables.
+Remember that all these variables need to match what you've got in your settings.py
+So if you've used different names, make sure to update them accordingly.
+Now let's send a test webhook from stripe to make sure that our listener is working.
+With all this complete our e-commerce store is deployed and anyone on the
+Internet can navigate our products, create a profile, and even check out
+using a test credit card number.
+--end aws--
+
+
+
+
 
