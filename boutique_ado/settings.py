@@ -224,3 +224,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 FREE_DELIVERY_THRESHOLD = 50
 STANDARD_DELIVERY_PERCENTAGE = 10
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+# Stripe
+STRIPE_CURRENCY = 'usd'
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+
+# note set these env vars in gitpod with 
+# export STRIPE_PUBLIC_KEY=pk_test_51K0ZuLGc2X9Nm4M2l45fWyPvOUNhNfwIvHdIQV2hCcc9uxdBwjRciYsIpUW8KX42QdGdXc9viedqGEF1PBF6GRQ8004qOoKrSs 
+# Export STRIPE_SECRET_KEY=THE-SECRET-KEY
+# must be re-exported after restarting workspace.

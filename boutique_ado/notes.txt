@@ -522,6 +522,13 @@ eventhought the corresponding field names are OrderLineItems.order and OrderLine
 
 
 
+CONNECTING TO STRIPE -----
+ note set these env vars in gitpod with 
+ 
+# export STRIPE_PUBLIC_KEY=pk_test_51K0ZuLGc2X9Nm4M2l45fWyPvOUNhNfwIvHdIQV2hCcc9uxdBwjRciYsIpUW8KX42QdGdXc9viedqGEF1PBF6GRQ8004qOoKrSs 
+# Export STRIPE_SECRET_KEY=THE-SECRET-KEY
+# must be re-exported after restarting workspace.
+
 
 
 connectung to AWS ----------------
@@ -716,7 +723,6 @@ With all this complete our e-commerce store is deployed and anyone on the
 Internet can navigate our products, create a profile, and even check out
 using a test credit card number.
 --end aws--
-
 
 
 
