@@ -229,6 +229,8 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STRIPE_CURRENCY = 'usd'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_WH_KEY = os.getenv('STRIPE_WH_SECRET', '')
+
 
 # note set these env vars in gitpod with 
 # export STRIPE_PUBLIC_KEY=pk_test_51K0ZuLGc2X9Nm4M2l45fWyPvOUNhNfwIvHdIQV2hCcc9uxdBwjRciYsIpUW8KX42QdGdXc9viedqGEF1PBF6GRQ8004qOoKrSs 
