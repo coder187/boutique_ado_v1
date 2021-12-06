@@ -121,7 +121,6 @@ form.addEventListener('submit', function(ev) {
             },
         }).then(function(result) {
             console.log('stripe error');
-            console.log(result.error.message);
             if (result.error) {
                 var errorDiv = document.getElementById('card-errors');
                 var html = `
