@@ -12,6 +12,27 @@ import datetime
 
 import stripe
 
+@require_POST
+def cache_checkout_data(request):
+    try:
+        # get the payment intent identifier for the intent in this request
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # modify payment intent - adding meta data (user, save(true/false), shopping bag)
+        stripe.PaymentIntent.modify(pid, metadata={
+            'bag': json.dumps(request.session.get('bag', {})),
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        # intent modified so rtn 200 ok
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, ('Sorry, your payment cannot be '
+                                 'processed right now. Please try '
+                                 'again later.'))
+        return HttpResponse(content=e, status=400)
+
+
 def checkout(request):
     # 1 PAGE LOADS AND CREATES AN INTENT WITH STRIPE
     # 2 USER FILLS IN FORM AND CC DETAILS AND SUBMITS FORM
