@@ -525,6 +525,10 @@ postgres db-----
 pip3 install psycopg2-binary
 
 
+python3 manage.py dumpdata --exclude auth.permission --exclude contenttypes > db.json
+python3 manage.py loaddata db.json
+heroku run python3 manage.py migrate
+
 CONNECTING TO STRIPE -----
  note set these env vars in gitpod with 
  
