@@ -132,9 +132,7 @@ WSGI_APPLICATION = 'boutique_ado.wsgi.application'
 #    }
 #}
 
-#DATABASES= {
-#    'default':dj_database_url.parse('postgres://fxonmbronysfan:72190d055b8dc44a66ca974ace5e54f6c8448d5a1f1917e42603754e773793ff@ec2-63-33-239-176.eu-west-1.compute.amazonaws.com:5432/d5q99mpl5c02pc')
-#    }
+
 
 # when running in heroku tyjere will be a database_url var
 if 'DATABASE_URL' in os.environ:
@@ -148,7 +146,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
